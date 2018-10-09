@@ -8,7 +8,9 @@ import { AppComponent } from './app.component';
 import { ListEmployeesComponent } from './employees/list-employees.component';
 import { CreateEmployeeComponent } from './employees/create-employee.component';
 import { CreateEmployeeModelComponent } from './employees/create-employee-model.component';
-const appRoutes: Routes =[
+import {SelectRequiredValidatorDirective} from './shared/select-required-validator.directive';
+
+const appRoutes: Routes = [
   { path: 'list', component: ListEmployeesComponent},
   {path: 'create', component: CreateEmployeeComponent},
   {path: 'model', component: CreateEmployeeModelComponent},
@@ -20,7 +22,8 @@ const appRoutes: Routes =[
     AppComponent,
     ListEmployeesComponent,
     CreateEmployeeComponent,
-    CreateEmployeeModelComponent
+    CreateEmployeeModelComponent,
+    SelectRequiredValidatorDirective
   ],
   imports: [
     BrowserModule,
