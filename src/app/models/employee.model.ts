@@ -3,12 +3,14 @@ export class Employee {
   name: string;
   gender: string;
   email?: string;
-  emailPattern?:string;
+  emailPattern?: string;
   phoneNumber?: number;
   contactPreference: string;
   dateOfBirth: Date;
   department: string;
   isActive: boolean;
   photoPath?: string;
- private password: string;
+  password?: string;
+  confirmPassword?: string;
+
 }

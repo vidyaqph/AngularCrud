@@ -12,7 +12,7 @@ import {Employee} from '../models/employee.model';
 export class CreateEmployeeModelComponent implements OnInit {
   datePickerConfig: Partial<BsDatepickerConfig>;
   employee: Employee = {id: null, name: null , contactPreference: null, dateOfBirth: null , department: null , email:''
-    , gender : null , isActive : null , phoneNumber : null , photoPath :null ,emailPattern:null};
+    , gender : null , isActive : null , phoneNumber : null , photoPath : null ,emailPattern:null, password: null , confirmPassword: null};
 
   isActive = true;
   previewPhoto = false;

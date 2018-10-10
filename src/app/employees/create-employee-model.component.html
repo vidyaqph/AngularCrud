@@ -4,10 +4,19 @@
       <h3 class="panel-title">Create Employee</h3>
     </div>
     <div class="panel-body">
-<div class="form-group" [class.has-error]="password.touched && password.invalid">
-  <label for="password" class="control-label" >Password</label>
-  <input type="text" id="password" name="password" [(ngModel)]="employee.password" #password = "ngModel" class="form-control">
-</div>
+      <div class="form-group" [class.has-error]="password.touched && password.invalid">
+        <label for="password" class="control-label">Password</label>
+        <input type="text" id="password" required name="password" [(ngModel)]="employee.password" #password="ngModel" class="form-control">
+        <span class="help-block" *ngIf=" password.errors?.required && password.touched"> Password is required</span>
+      </div>
+      <div class="form-group" [class.has-error]="confirmPassword.touched && confirmPassword.invalid">
+        <label for="confirmPassword" class="control-label">Password</label>
+        <input type="text" id="confirmPassword" required appConfirmEqualValidator="password" name="confirmMassword" [(ngModel)]="employee.confirmPassword" #confirmPassword="ngModel"
+          class="form-control">
+        <span class="help-block" *ngIf=" confirmPassword.errors?.required && confirmPassword.touched"> Confirm Password is
+          required</span>
+          <span class="help-block" *ngIf=" confirmPassword.errors?.notEqual && confirmPassword.touched && !confirmPassword.errors?.required"> Passwords do not match</span>
+      </div>
 
       <div class="form-group" [class.has-error]="name.invalid && name.touched" [class.has-success]="name.valid">
         <label for="name" class="control-label"> Name</label>
@@ -70,12 +79,14 @@
       <div class="form-group" [class.has-error]="department.touched && department.invalid">
         <label for="department" class="control-label">Department
         </label>
-        <select id="department" name="department" appSelectValidator="-1" required [(ngModel)]="employee.department" #department="ngModel" class="form-control">
-        <option disabled [ngValue]="null">Select a department...</option>
-        <option value="-1">Please select</option>
+        <select id="department" name="department" appSelectValidator="-1" required [(ngModel)]="employee.department" #department="ngModel"
+          class="form-control">
+          <option disabled [ngValue]="null">Select a department...</option>
+          <option value="-1">Please select</option>
           <option *ngFor="let dept of departments" [value]="dept.id">{{dept.name}}</option>
         </select>
-        <span class="help-block" *ngIf="department.touched && (department.errors?.required || department.errors?.defaultSelected)">Department is required </span>
+        <span class="help-block" *ngIf="department.touched && (department.errors?.required || department.errors?.defaultSelected)">Department
+          is required </span>
       </div>
 
 
