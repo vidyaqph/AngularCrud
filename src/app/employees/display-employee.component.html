@@ -1,10 +1,5 @@
-<!-- This lists all employee list in child component -->
-<!-- <div  *ngFor="let emp of employees">
-  <app-display-employee [emp]="emp"></app-display-employee>
-  </div> -->
-  <!-- This list all employees in a single component.
-  <div class="panel panel-primary" *ngFor="let emp of employees">
-   <div class="panel-heading">
+<div class="panel panel-primary">
+  <div class="panel-heading">
     <h3 class="panel-title">{{emp.name}}</h3>
   </div>
   <div class="panel-body">
@@ -32,7 +27,7 @@
           </div>
           <div class="row">
             <div class="col-xs-6">Department</div>
-            <div class="col-xs-6" [ngSwitch]= "emp.department">
+            <div class="col-xs-6" [ngSwitch]="emp.department">
               : <span *ngSwitchCase="1">Help Desk</span>
               <span *ngSwitchCase="2">IT</span>
               <span *ngSwitchCase="3">Payroll</span>
@@ -51,10 +46,5 @@
         </div>
       </div>
     </div>
-  </div> -->
-
-<!-- this list single employee -->
-<button (click)="nextEmployee()" class="btn btn-primary" >View next Employee</button>
-<br/>
-<br/>
-<app-display-employee [emp]="employeeToDisplay"></app-display-employee>
+  </div>
+</div>
