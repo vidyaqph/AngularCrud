@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import {Department} from '../models/department.model';
 import {BsDatepickerConfig} from 'ngx-bootstrap/datepicker';
@@ -12,6 +12,7 @@ import {Router} from '@angular/router';
   styleUrls: ['./create-employee-model.component.css']
 })
 export class CreateEmployeeModelComponent implements OnInit {
+  @ViewChild('employeeForm') public createEmployeeForm: NgForm;//This is used to reference this component to check whether form is dirty or not in CanDeactivateGuard
   datePickerConfig: Partial<BsDatepickerConfig>;
   employee: Employee = {id: null, name: null , contactPreference: null, dateOfBirth: null , department: null , email:''
     , gender : null , isActive : null , phoneNumber : null , photoPath : null ,emailPattern:null, password: null , confirmPassword: null};

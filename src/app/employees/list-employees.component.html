@@ -1,60 +1,126 @@
 <!-- This lists all employee list in child component -->
-<!-- <div  *ngFor="let emp of employees">
+<!--
+  <div  *ngFor="let emp of employees">
   <app-display-employee [emp]="emp"></app-display-employee>
-  </div> -->
-  <!-- This list all employees in a single component.
-  <div class="panel panel-primary" *ngFor="let emp of employees">
-   <div class="panel-heading">
-    <h3 class="panel-title">{{emp.name}}</h3>
-  </div>
-  <div class="panel-body">
-    <div class="col-xs-10">
-      <div class="row vertical-align">
-        <div class="col-xs-4">
-          <img [src]="emp.photoPath" class="imageClass" />
-        </div>
-        <div class="col-xs-8">
-          <div class="row">
-            <div class="col-xs-6">Gender</div>
-            <div class="col-xs-6">:{{emp.gender}}</div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">Email</div>
-            <div class="col-xs-6">:{{emp.email}}</div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">Contact Preferences</div>
-            <div class="col-xs-6">:{{emp.contactPreference}}</div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">Date of Birth</div>
-            <div class="col-xs-6">:{{emp.dateOfBirth|date}}</div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">Department</div>
-            <div class="col-xs-6" [ngSwitch]= "emp.department">
-              : <span *ngSwitchCase="1">Help Desk</span>
-              <span *ngSwitchCase="2">IT</span>
-              <span *ngSwitchCase="3">Payroll</span>
-              <span *ngSwitchCase="4">HR</span>
-              <span *ngSwitchDefault>N/A</span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">Phone</div>
-            <div class="col-xs-6">:{{emp.phoneNumber}}</div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">Is Active</div>
-            <div class="col-xs-6">:{{emp.isActive}}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
 
+  </div>
+-->
+<!--
+  This list all employees in a single component.
+  <div class="panel panel-primary" *ngFor="let emp of employees">
+
+   <div class="panel-heading">
+
+    <h3 class="panel-title">{{emp.name}}</h3>
+
+  </div>
+
+  <div class="panel-body">
+
+    <div class="col-xs-10">
+
+      <div class="row vertical-align">
+
+        <div class="col-xs-4">
+
+          <img [src]="emp.photoPath" class="imageClass" />
+
+        </div>
+
+        <div class="col-xs-8">
+
+          <div class="row">
+
+            <div class="col-xs-6">Gender</div>
+
+            <div class="col-xs-6">:{{emp.gender}}</div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-xs-6">Email</div>
+
+            <div class="col-xs-6">:{{emp.email}}</div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-xs-6">Contact Preferences</div>
+
+            <div class="col-xs-6">:{{emp.contactPreference}}</div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-xs-6">Date of Birth</div>
+
+            <div class="col-xs-6">:{{emp.dateOfBirth|date}}</div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-xs-6">Department</div>
+
+            <div class="col-xs-6" [ngSwitch]= "emp.department">
+
+              : <span *ngSwitchCase="1">Help Desk</span>
+
+              <span *ngSwitchCase="2">IT</span>
+
+              <span *ngSwitchCase="3">Payroll</span>
+
+              <span *ngSwitchCase="4">HR</span>
+
+              <span *ngSwitchDefault>N/A</span>
+
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-xs-6">Phone</div>
+
+            <div class="col-xs-6">:{{emp.phoneNumber}}</div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-xs-6">Is Active</div>
+
+            <div class="col-xs-6">:{{emp.isActive}}</div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+-->
+
+<h1 *ngIf="dataFromChild">{{ dataFromChild }}</h1> <!-- Data is displayed using Output-->
+<h1 #h1Variable></h1> <!-- Data is displayed using template reference variable-->
+
+<!-- Clicking on child panel will display the name using output variable -->
 <!-- this list single employee -->
-<button (click)="nextEmployee()" class="btn btn-primary" >View next Employee</button>
-<br/>
-<br/>
-<app-display-employee [emp]="employeeToDisplay" [employeeId]="employeeToDisplay.id"></app-display-employee>
+
+<button (click)="nextEmployee()" class="btn btn-primary">
+  View next Employee
+</button>
+<br />
+<br />
+<div (click) = "h1Variable.innerHTML = childComponent.emp.name +' '+childComponent.emp.gender +' ' +childComponent.getEmployeeNameAndGender()" > <!--This div is added for template reference varialbe-->
+  <app-display-employee
+    [emp]="employeeToDisplay"
+    [employeeId]="employeeToDisplay.id"
+    (notify)="handleNotify($event)" #childComponent
+  ></app-display-employee>
+</div>

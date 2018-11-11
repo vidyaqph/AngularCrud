@@ -13,11 +13,12 @@ import {ConfirmEqualValidatorDirective} from './shared/confirm-equal-validator.d
 // Services
 import {EmployeeService} from './employees/employee.service';
 import { DisplayEmployeeComponent } from './employees/display-employee.component';
+import {CreateEmployeeCanDeactivateGuardService} from './employees/create-employee-can-deactivate-guard.service';
 
 const appRoutes: Routes = [
   { path: 'list', component: ListEmployeesComponent},
   {path: 'create', component: CreateEmployeeComponent},
-  {path: 'model', component: CreateEmployeeModelComponent},
+  {path: 'model', component: CreateEmployeeModelComponent , canDeactivate: [CreateEmployeeCanDeactivateGuardService] },
   { path: '', redirectTo: '/list', pathMatch: 'full'}
 ];
 
@@ -37,7 +38,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     FormsModule
     ],
-  providers: [EmployeeService],
+  providers: [EmployeeService, CreateEmployeeCanDeactivateGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
