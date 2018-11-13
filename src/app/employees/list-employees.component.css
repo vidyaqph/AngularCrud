@@ -9,3 +9,7 @@ display: flex;
 align-items: center;
 }
 /* require these styles when child component displayEmployee is not used. */
+/* Change cursor to pointer.*/
+.pointerCursor {
+cursor: pointer;
+}

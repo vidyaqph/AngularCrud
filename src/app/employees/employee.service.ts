@@ -40,6 +40,11 @@ getEmployee(): Employee[] {
 
   return this.listEmployees;
 }
+getEmployeeDetails(id:number): Employee {
+
+  return this.listEmployees.find(x=>x.id === id);
+}
+
 saveEmployee(employee: Employee) {
   this.listEmployees.push(employee);
 }
