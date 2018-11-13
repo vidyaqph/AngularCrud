@@ -1,3 +1,4 @@
+5:30:29
 To create a new Angular project in Angular5 .
 Insallations:
 1.Latest node :https://nodejs.org/en/download (node -v  ->gives version)
@@ -23,6 +24,7 @@ Create Component:
 2)	Ng g c <component_name> is a shorthand form.
 3)	To create inside a folder , give ng g c foldername/componentname. This will create the folder inside src/app folder in the project. --spec false to avoid creating spec. --flat true is used to avoid creating separate folder for each component.
 So ng g c employees/listEmployees –spec false --flat true.
+OR ng g c employees\listEmployees  --flat  --no-spec
 When code is changed, page is refreshed automatically even before saving the changes.
 Global styles can be defined in src/styles.scss. Kendo styles are imported there.
 Import styles from url using @import url(‘url’);
@@ -120,10 +122,109 @@ Custom Validator
 To create a custom validator , create a directive and use it on the element. Can use the selector for the directive on html elements. Need to register the directive against NG_VALIDATORS (opaque token). Need to register it in the app.module. to pass default value to validate from html element to directive , use @Input .  pass value like appSelectValidator = “select” from html. Inside directive define @Input()appSelectValidator:string and compare. To use an alias name, use @Input(‘appSelectValidator’) defaultValue :string so that we can compare defaultName.
 === checks value and underlying datatype.
 Tslint.json  contains all rules. We can change lint rules here.
-ngModelGroup directive is used to group elements together. Eg: to display error message on both password and confirmPassword fields when they do not match.
+ngModelGroup 
+directive is used to group elements together. Eg: to display error message on both password and confirmPassword fields when they do not match put them together inside a div with ngmodelgroup directive
+Trigger validation manually.
+use updateValueAndValidity() function to trigger a form control’s validation. <controlName>.control.updateValueAndValidity() will fire all validations on the control.
+Another way is to give the directive on ngModelGroup div so that validation happens whenever the controls inside the group changes. Then need to change the validation group accordingly.
+EVENTS on Controls
+Change event: fires only after the typing is completed and control looses focus.
+Input event: fires when the user types in an input field.
+Services
+Service is a class. 
+Irrespective of whether a service has an injected dependency, angular recommends to use @injectable decorator.
+If a service is registered at component level , it is  available only to the component and its children.
+To use a service in a component , inject it into the component constructor.
+Switch Case
+ngSwitch 
+: [ngSwitch]=”variable to check”
+<span *ngSwitchCase = “value”>display name</span>
+ngSwitchDefault is used to give a default value.
+ngSwitchCase:
+ngSwitchDefault:
+Create a child Component
+1.	Create a component normally using ng g c employees\listEmployees --flat --no-spec
+2.	Put all html containing model variable in child component and in .ts create @Input() modelVariable:Type ; 
+3.	Add the decorator <child selector [modelVariable]=”passedVariable”> in parent component.
+Detect and react to Input property changes
+1.	One way is to use property setter
+2.	Another way is to use ngOnChanges lifecycle hook.
 
+ngOnChanges
+ngOnChanges(changes:SimpleChanges) (take care of correct spelling.)
+Chnages contain previous value and current value.
+Useful when multiple properties change.we get all changes instead of just one single change.
+Property setter
+Specific to a single property and gets the changes of only that property.
+@Input() property : used to pass, data from parent to child component.
+@Output()  - Used to pass data from child to parent  as EventEmitter.
+@Input() emp :number. (specified in child)
+In the child component,
+@Output() notify : EventEmitter<string> = new EventEmitter<string>();
+Pass data as this.notify.emit(value) , where value is event data which is termed as event payload.
+Now, parent need to handle the event. Parent element specify (notify) = “handleNotify($event)” where $event will receive the payload.
+Child component passes data to parent using event.
+Another way to call child component public methods and properties from parent:
+Template reference variable.
+Create a template refrence variable like  #childComponent on the parent component’s child component  element and can call child property or method like  childComponent.emp.name
+Routeguards
+Why they are required? :Suppose we are on an edit form and we accidently click on a link .it immediately navigate there and lose data. It is good to keep a confirmation whether to navigate before do actual navigation. It can easily be achieved using CanDeactivate Routeguard.
+CanDeactivate Routeguard – guard navigation away from current route.
+CanActivate – Guard navigation to a route.
+CanActivateChild – guard navigation to a child route.
+CanLoad – guard navigation to a feature module loaded asynchronously.
+Resolve – perform route data retrieval before route navigation.
+3 steps t build a route guard
+1.	Build route guard –Create a service which implements CanDeactivate<componentName>. Then inside the CanDeactivate method check whether the form is dirty. Need to define   @ViewChild('employeeForm') public createEmployeeForm: NgForm;//This is used to reference this component to check whether form is dirty or not in CanDeactivateGuard
+2.	Register the guard with angular dependency injection system – import the service in app.module(or respective module) and define in providers.
+3.	Tie the guard to a route-.- provide canDeactive in appRoutes(inside app.module or respective module).Provide like {path: 'model', component: CreateEmployeeModelComponent , canDeactivate: [CreateEmployeeCanDeactivateGuardService] }
+If you want to access following inside the Parent Component, use @ViewChild decorator of Angular.
+1.	Child Component
+2.	Directive
+3.	DOM Element
+ViewChild returns the first element that matches the selector.
+Any element which is located inside the template, is ContentChild.
+Note: canDeactivate does not work if we type the url or close the browser.
+Pass parameters In Route
+Define route like  { path: 'employees/:id', component: EmployeeDetailsComponent} in appRoutes inside module.ts. to pass multiple paramters , { path: 'employees/:id/:gender'…
+Then need to inject route to constructor of the class from where the navigation to be done. Use     this._router.navigate(['./employees', empId]);
+Or we can do declaratively like <a [routerLink] = “[‘/employees’,2”></a>
+Read Parameter value from route
+To read parameter value from route , need to import ActivatedRoute from angular/router. Also need to inject it in constructor.
+Now either we can use snapshot approach or Observable approach.
+Snapshot Approach
+This is good in scenarios like , when we want to move from one page to another to see some details.
+Use this if the route parameter value does not change and you only need to read initial route parameter value.
+Now get it   like     const id = +this._route.snapshot.paramMap.get('id');
+OR
+const id = +this._route.snapshot.params['id'];// Gets parameter id from route. + converts string to number.
+Note: params is deprecated since angular 4 and use paramMaps instead.
+Observable approach
+How to subscribe to angular parameter changes?
+This approach is good when we want to navigate from one employee to another. Use this if the route parameter value changes and if you want to react and execute some code in response to that change.
+Define like this.
+this._route.paramMap.subscribe(params => {
+      this._id = +params.get('id') ;
+      this.employee = this._employeeService.getEmployeeDetails(this._id);
+    });
+
+Note:If we use snapshot approach in this scenario, the route value changes ,but component gets initialized only once and will not be changing the employee values displayed on this.
+Convert to int from string easily
++ will convert string value to int. 
+Const a = +b will convert string b to int.
+Bootstrap Footer
+To include a footer , just place a div with style class =”panel-footer”
+Bootstrap right
+Class = “pull-right” will display element to the right.
+routerLink
+square brackets are not needed when we bind to a simple string like <a routerLink = “/list”>
+square brackets are required if we bind to a property within component class or binding to a parameterized list like <a [routerLink] =”[‘/list’,id]>
+
+VS Code Editor 
+Format On Save –to auto format on save.
 https://angular.io/resources contain resources and all 3rd party components.
 Check Core version : dotnet --info
+
 
 
 
