@@ -1,4 +1,5 @@
-<form #employeeForm="ngForm" (ngSubmit)="SaveEmployee()">
+<!-- <form #employeeForm="ngForm" (ngSubmit)="SaveEmployee();employeeForm.reset()"> --> <!--Reset form from html-->
+    <form #employeeForm="ngForm" (ngSubmit)="SaveEmployee(employeeForm);">
   <div class="panel panel-primary">
     <div class="panel-heading">
       <h3 class="panel-title">Create Employee</h3>

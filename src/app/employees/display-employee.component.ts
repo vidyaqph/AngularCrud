@@ -9,6 +9,7 @@ import {
   EventEmitter
 } from '@angular/core';
 import { Employee } from '../models/employee.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-display-employee',
@@ -41,9 +42,13 @@ export class DisplayEmployeeComponent implements OnInit, OnChanges {
   // get emp(): Employee {
   //   return this._employee;
   // }
-  constructor() {}
+  private selectedEmployeeId: number;
+  constructor(private _route: ActivatedRoute) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    // this variable is used in the display-employee style  panel-success to conditionally change style.
+    this.selectedEmployeeId = +this._route.snapshot.paramMap.get('id');
+  }
   // Tracks the input chnages using ngOnChanges
   ngOnChanges(changes: SimpleChanges) {
     for (const propName of Object.keys(changes)) {

@@ -1,0 +1,15 @@
+<div class="form-group">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Search By Name"
+    style="width: 300px"
+    [(ngModel)]="searchTerm"
+  />
+</div>
+<div
+  *ngFor="let emp of (employees | employeeFilter: searchTerm)"
+  (click)="onClick(emp.id)"
+>
+  <app-display-employee [emp]="emp"></app-display-employee>
+</div>

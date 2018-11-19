@@ -1,27 +1,34 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {FormsModule} from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { AppComponent } from './app.component';
 import { ListEmployeesComponent } from './employees/list-employees.component';
 import { CreateEmployeeComponent } from './employees/create-employee.component';
 import { CreateEmployeeModelComponent } from './employees/create-employee-model.component';
-import {SelectRequiredValidatorDirective} from './shared/select-required-validator.directive';
-import {ConfirmEqualValidatorDirective} from './shared/confirm-equal-validator.directive';
+import { SelectRequiredValidatorDirective } from './shared/select-required-validator.directive';
+import { ConfirmEqualValidatorDirective } from './shared/confirm-equal-validator.directive';
 // Services
-import {EmployeeService} from './employees/employee.service';
+import { EmployeeService } from './employees/employee.service';
 import { DisplayEmployeeComponent } from './employees/display-employee.component';
-import {CreateEmployeeCanDeactivateGuardService} from './employees/create-employee-can-deactivate-guard.service';
+import { CreateEmployeeCanDeactivateGuardService } from './employees/create-employee-can-deactivate-guard.service';
 import { EmployeeDetailsComponent } from './employees/employee-details.component';
+import { ListEmployeesWithHighlightedComponent } from './list-employees-with-highlighted.component';
+import { EmployeeFilterPipe } from './employees/employees-filter.pipe';
 
 const appRoutes: Routes = [
-  { path: 'list', component: ListEmployeesComponent},
-  {path: 'create', component: CreateEmployeeComponent},
-  { path: 'employees/:id', component: EmployeeDetailsComponent},
-  {path: 'model', component: CreateEmployeeModelComponent , canDeactivate: [CreateEmployeeCanDeactivateGuardService] },
-  { path: '', redirectTo: '/list', pathMatch: 'full'}
+  { path: 'list', component: ListEmployeesComponent },
+  { path: 'highlightedList', component: ListEmployeesWithHighlightedComponent },
+  { path: 'create', component: CreateEmployeeComponent },
+  { path: 'employees/:id', component: EmployeeDetailsComponent },
+  {
+    path: 'model',
+    component: CreateEmployeeModelComponent,
+    canDeactivate: [CreateEmployeeCanDeactivateGuardService]
+  },
+  { path: '', redirectTo: '/list', pathMatch: 'full' }
 ];
 
 @NgModule({
@@ -33,15 +40,17 @@ const appRoutes: Routes = [
     SelectRequiredValidatorDirective,
     ConfirmEqualValidatorDirective,
     DisplayEmployeeComponent,
-    EmployeeDetailsComponent
+    EmployeeDetailsComponent,
+    ListEmployeesWithHighlightedComponent,
+    EmployeeFilterPipe
   ],
   imports: [
     BrowserModule,
     BsDatepickerModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     FormsModule
-    ],
+  ],
   providers: [EmployeeService, CreateEmployeeCanDeactivateGuardService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
