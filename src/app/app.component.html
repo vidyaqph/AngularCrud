@@ -1,23 +1,25 @@
 <div class="container">
-<nav class="navbar navbar-default">
-<ul class="nav navbar-nav">
-  <li>
-    <a routerLink="list" routerLinkActive="router-link-active"  >List</a>
-  </li>
-  <li>
-    <a routerLink="highlightedList" routerLinkActive="router-link-active"  >Highlighted List</a>
-  </li>
-  <li>
-    <a routerLink="create" routerLinkActive="router-link-active"  >Create</a>
-  </li>
-  <li>
-      <a routerLink="model" routerLinkActive="router-link-active"  >Create Using Model</a>
-    </li>
-    <li>
-      <a [routerLink]="['/employees',1]"   >Declarative routing</a>
-    </li>
-</ul>
-</nav>
-
-<router-outlet></router-outlet>
+  <nav class="navbar navbar-default">
+    <ul class="nav navbar-nav">
+      <li>
+        <a routerLink="list" routerLinkActive="router-link-active">List</a>
+      </li>
+      <li>
+        <a routerLink="highlightedList" routerLinkActive="router-link-active"
+          >Highlighted List</a
+        >
+      </li>
+      <li>
+        <a routerLink="create" routerLinkActive="router-link-active">Create</a>
+      </li>
+      <li>
+        <a routerLink="model" routerLinkActive="router-link-active"
+          >Create Using Model</a
+        >
+      </li>
+      <li><a [routerLink]="['/employees', 1]">Declarative routing</a></li>
+    </ul>
+  </nav>
+  <div *ngIf="showLoadingIndicator">Loading...</div>
+  <router-outlet></router-outlet>
 </div>

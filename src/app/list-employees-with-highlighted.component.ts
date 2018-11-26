@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Employee } from './models/employee.model';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { EmployeeService } from './employees/employee.service';
 
 @Component({
@@ -10,18 +10,85 @@ import { EmployeeService } from './employees/employee.service';
 })
 export class ListEmployeesWithHighlightedComponent implements OnInit {
   employees: Employee[];
+  filteredEmployees: Employee[]; // Used to keep filtered list,so that employees variable
+  // will be unaffected.if we use employees variable itself, we will lose original list.
   employeeToDisplay: Employee;
   private arrayIndex = 1;
   dataFromChild: string;
-  searchTerm: string;
+
+  // searchTerm: string; //Used for testing filtering using pipe
+  private _searchTerm: string; // CHnaging to property to use for data filtering in component.
+  get searchTerm(): string {
+    return this._searchTerm;
+  }
+  set searchTerm(value: string) {
+    // when the search term changes this gets executed.
+    this._searchTerm = value;
+    this.filteredEmployees = this.filterEmployees(value);
+    // this.employees.filter(data => data.name.toLowerCase() === this.searchTerm.toLowerCase());
+  }
+
   constructor(
     private _employeeService: EmployeeService,
-    private _router: Router
-  ) {}
+    private _router: Router,
+    private _route: ActivatedRoute
+  ) {
+    // this will get data from resolver service. the key will be the same key used in resolve section in app modules
+    // to add resolver service. this will load the page when all the display elements are ready while clicking on a link
+    // this rewrite will help to avoid displaying blank page (after the delay which is introduced in the employee service)
+    this.employees = this._route.snapshot.data['employeeList'];
+    this.filteredEmployees = this.employees;
+    // Snapshot approach to read query param
+    // if (this._route.snapshot.queryParamMap.has('searchTerm')) {
+    //   this.searchTerm = this._route.snapshot.queryParamMap.get('searchTerm');
+    // } else {
+    //   this.filteredEmployees = this.employees;
+    // }
+    /* Observable approach */
+    this._route.queryParamMap.subscribe(queryparams => {
+      if (queryparams.has('searchTerm')) {
+        this.searchTerm = queryparams.get('searchTerm');
+      }
+    });
+  }
 
   ngOnInit() {
-    this.employees = this._employeeService.getEmployee();
-    this.employeeToDisplay = this.employees[0];
+    // Code is commented to use move
+    // // this.employees = this._employeeService.getEmployee(); // without observable
+    // // With observable
+    // this._employeeService.getEmployeeObservable().subscribe(empList => {
+    //   this.employees = empList;
+    //   this.employeeToDisplay = this.employees[0];
+    //   this.filteredEmployees = this.employees;
+    //   // Snapshot approach to read query param
+    //   // if (this._route.snapshot.queryParamMap.has('searchTerm')) {
+    //   //   this.searchTerm = this._route.snapshot.queryParamMap.get('searchTerm');
+    //   // } else {
+    //   //   this.filteredEmployees = this.employees;
+    //   // }
+    //   /* Observable approach */
+    //   this._route.queryParamMap.subscribe(queryparams => {
+    //     if (queryparams.has('searchTerm')) {
+    //       this.searchTerm = queryparams.get('searchTerm');
+    //     }
+    //   });
+    //   //
+    // });
+    // console.log('has ' + this._route.snapshot.queryParamMap.has('searchTerm'));
+    // console.log('get ' + this._route.snapshot.queryParamMap.get('searchTerm'));
+    // console.log(
+    //   'getall ' + this._route.snapshot.queryParamMap.getAll('searchTerm')
+    // );
+    // console.log('keys ' + this._route.snapshot.queryParamMap.keys); // Get query param.
+    // console.log('keys ' + this._route.snapshot.paramMap.keys); // Get optional or required parameter.
+  }
+  filterEmployees(value: string): Employee[] {
+    // return this.employees.filter(
+    //   data => data.name.toLowerCase() === value.toLowerCase()  // this does not work.
+    // );
+    return this.employees.filter(
+      data => data.name.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
   }
 
   nextEmployee(): void {
@@ -37,6 +104,18 @@ export class ListEmployeesWithHighlightedComponent implements OnInit {
     this.dataFromChild = eventData;
   }
   onClick(empId: number) {
-    this._router.navigate(['./employees', empId]);
+    // this._router.navigate(['./employees', empId]); // Without querystring
+    this._router.navigate(['./employees', empId], {
+      queryParams: { searchTerm: this.searchTerm, testParam: 'testValue' } // query string parameters
+      // ,queryParamsHandling: 'preserve'  // Can be used to preserve query parameters while going back.
+    }); // With querystring
+  }
+  changeEmployeeName() {
+    this.employees[0].name = 'Jordan'; // Change for primitive type change to test  pipe - pure pipe detects this
+    // const newEmployeesArray: Employee[] = Object.assign([], this.employees); // creating 2 diff object references
+    // // Note : need to put [] for array.otherwise won't work.
+    // newEmployeesArray[0].name = 'Jordan';
+    // this.employees = newEmployeesArray; // changing objet reference- pure pipe detects this.
+    this.filteredEmployees = this.filterEmployees(this.searchTerm); // to see the name chnage during filtering
   }
 }

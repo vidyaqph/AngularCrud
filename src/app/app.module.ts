@@ -17,10 +17,15 @@ import { CreateEmployeeCanDeactivateGuardService } from './employees/create-empl
 import { EmployeeDetailsComponent } from './employees/employee-details.component';
 import { ListEmployeesWithHighlightedComponent } from './list-employees-with-highlighted.component';
 import { EmployeeFilterPipe } from './employees/employees-filter.pipe';
+import { EmployeeListResolverService } from './shared/employee-list-resolver.service';
 
 const appRoutes: Routes = [
   { path: 'list', component: ListEmployeesComponent },
-  { path: 'highlightedList', component: ListEmployeesWithHighlightedComponent },
+  {
+    path: 'highlightedList',
+    component: ListEmployeesWithHighlightedComponent,
+    resolve: { employeeList: EmployeeListResolverService } // employeeList is key and can give any name
+  },
   { path: 'create', component: CreateEmployeeComponent },
   { path: 'employees/:id', component: EmployeeDetailsComponent },
   {
@@ -47,10 +52,14 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     BsDatepickerModule.forRoot(),
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, { enableTracing: true }), // Enable tracing of router navigation events.. Dont do in production
     FormsModule
   ],
-  providers: [EmployeeService, CreateEmployeeCanDeactivateGuardService],
+  providers: [
+    EmployeeService,
+    CreateEmployeeCanDeactivateGuardService,
+    EmployeeListResolverService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
