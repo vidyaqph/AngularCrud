@@ -18,6 +18,7 @@ import { EmployeeDetailsComponent } from './employees/employee-details.component
 import { ListEmployeesWithHighlightedComponent } from './list-employees-with-highlighted.component';
 import { EmployeeFilterPipe } from './employees/employees-filter.pipe';
 import { EmployeeListResolverService } from './shared/employee-list-resolver.service';
+import { PageNotFoundComponent } from './page-not-found.component';
 
 const appRoutes: Routes = [
   { path: 'list', component: ListEmployeesComponent },
@@ -47,7 +48,8 @@ const appRoutes: Routes = [
     DisplayEmployeeComponent,
     EmployeeDetailsComponent,
     ListEmployeesWithHighlightedComponent,
-    EmployeeFilterPipe
+    EmployeeFilterPipe,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

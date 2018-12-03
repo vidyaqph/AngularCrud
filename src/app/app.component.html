@@ -20,6 +20,18 @@
       <li><a [routerLink]="['/employees', 1]">Declarative routing</a></li>
     </ul>
   </nav>
-  <div *ngIf="showLoadingIndicator">Loading...</div>
+  <!-- Loading spinner -->
+  <!-- <div *ngIf="showLoadingIndicator" class="spinner"></div> -->
+  <!-- Spinner from loading.io/css -->
+  <div class="lds-roller" *ngIf="showLoadingIndicator">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
   <router-outlet></router-outlet>
 </div>
