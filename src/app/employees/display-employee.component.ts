@@ -9,7 +9,8 @@ import {
   EventEmitter
 } from '@angular/core';
 import { Employee } from '../models/employee.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { EmployeeService } from './employee.service';
 
 @Component({
   selector: 'app-display-employee',
@@ -20,8 +21,12 @@ export class DisplayEmployeeComponent implements OnInit, OnChanges {
   // OnChanges is to capture previous and next emp data
   @Input() emp: Employee; // Data comes from parent component listEmployee, declared to capture input chnages using ngOnChnges
   // @Input() employeeId: number; // Pass data from parent to child
+  @Input() searchTerm: string;
   @Output() notify: EventEmitter<string> = new EventEmitter<string>(); // Pass data from child to parent
+  @Output() notifyDelete: EventEmitter<number> = new EventEmitter<number>();
   private _employeeId: number;
+  confirmDelete = false; // variable to display delete confirmation .
+  // panelExpanded = true; // used to implement accordian - expand/collapse
   // tslint:disable-next-line:whitespace
   @Input()
   public get employeeId(): number {
@@ -42,8 +47,12 @@ export class DisplayEmployeeComponent implements OnInit, OnChanges {
   // get emp(): Employee {
   //   return this._employee;
   // }
-  private selectedEmployeeId: number;
-  constructor(private _route: ActivatedRoute) {}
+  selectedEmployeeId: number;
+  constructor(
+    private _route: ActivatedRoute,
+    private _router: Router,
+    private _employeeService: EmployeeService
+  ) {}
 
   ngOnInit() {
     // this variable is used in the display-employee style  panel-success to conditionally change style.
@@ -71,5 +80,18 @@ export class DisplayEmployeeComponent implements OnInit, OnChanges {
   }
   getEmployeeNameAndGender(): string {
     return this.emp.contactPreference;
+  }
+  viewEmployee() {
+    this._router.navigate(['/employees', this.emp.id], {
+      queryParams: { searchTerm: this.searchTerm, testParam: 'testValue' }
+    });
+  }
+  editEmployee() {
+    this._router.navigate(['/edit', this.emp.id], {});
+  }
+  deleteEmployee() {
+    this._employeeService.deleteEmployee(this.emp.id);
+    this.notifyDelete.emit(this.emp.id);
+    // this is to notify the parent list component about delete so that it can adjust the filter accordingly
   }
 }

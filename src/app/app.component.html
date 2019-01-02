@@ -13,9 +13,13 @@
         <a routerLink="create" routerLinkActive="router-link-active">Create</a>
       </li>
       <li>
-        <a routerLink="model" routerLinkActive="router-link-active"
+        <!-- <a routerLink="model" routerLinkActive="router-link-active" -->
+            <a routerLink="edit/0" routerLinkActive="router-link-active"
           >Create Using Model</a
         >
+      </li>
+      <li>
+        <a routerLink="crud" routerLinkActive="router-link-active">CRUD</a>
       </li>
       <li><a [routerLink]="['/employees', 1]">Declarative routing</a></li>
     </ul>

@@ -10,6 +10,7 @@ import {BsDatepickerConfig} from 'ngx-bootstrap/datepicker';
 })
 export class CreateEmployeeComponent implements OnInit {
   datePickerConfig: Partial<BsDatepickerConfig>;
+  panelTitle: string;
   gender = 'female';
   contactPref = 'email';
   isActive = true;

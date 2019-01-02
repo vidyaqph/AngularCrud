@@ -6,9 +6,8 @@
   display: flex;
   align-items: center;
 }
-button.btn {
-  width: 70px;
-}
-/* .pointerCursor {  used for accordian
+/* require these styles when child component displayEmployee is not used. */
+/* Change cursor to pointer.*/
+.pointerCursor {
   cursor: pointer;
-} */
+}

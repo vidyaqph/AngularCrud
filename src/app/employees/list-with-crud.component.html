@@ -1,0 +1,23 @@
+<div class="form-group">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Search By Name"
+    [(ngModel)]="searchTerm"
+  />
+</div>
+<!-- Used for testing pipe -->
+<!--
+  <div *ngFor="let emp of (employees | employeeFilter: searchTerm)"
+    (click)="onClick(emp.id)">
+    <app-display-employee [emp]="emp"></app-display-employee>
+  </div>
+-->
+<!-- Implementing filter in component -->
+<div *ngFor="let emp of filteredEmployees">
+  <app-display-employee
+    [emp]="emp"
+    [searchTerm]="searchTerm"
+    (notifyDelete)="onDeleteNotification($event)"
+  ></app-display-employee>
+</div>

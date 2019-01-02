@@ -1,50 +1,73 @@
-<div class="panel panel-primary" [class.panel-success]="selectedEmployeeId === emp.id" (click)="handleClick()">
-  <div class="panel-heading">
-    <h3 class="panel-title">{{emp.name | uppercase}}</h3>
-  </div>
-  <div class="panel-body">
-    <div class="col-xs-10">
-      <div class="row vertical-align">
-        <div class="col-xs-4">
-          <img [src]="emp.photoPath" class="imageClass" />
-        </div>
-        <div class="col-xs-8">
-          <div class="row">
-            <div class="col-xs-6">Gender</div>
-            <div class="col-xs-6">:{{emp.gender}}</div>
+<app-accordian [title]="emp.name|uppercase"  [hasJustViewed]="selectedEmployeeId === emp.id" [isHidden]="false">
+    <div class="col-xs-10 myPanelBody">
+        <div class="row vertical-align">
+          <div class="col-xs-4">
+            <img [src]="emp.photoPath" class="imageClass" />
           </div>
-          <div class="row">
-            <div class="col-xs-6">Email</div>
-            <div class="col-xs-6">:{{emp.email}}</div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">Contact Preferences</div>
-            <div class="col-xs-6">:{{emp.contactPreference}}</div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">Date of Birth</div>
-            <div class="col-xs-6">:{{emp.dateOfBirth|date}}</div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">Department</div>
-            <div class="col-xs-6" [ngSwitch]="emp.department">
-              : <span *ngSwitchCase="1">Help Desk</span>
-              <span *ngSwitchCase="2">IT</span>
-              <span *ngSwitchCase="3">Payroll</span>
-              <span *ngSwitchCase="4">HR</span>
-              <span *ngSwitchDefault>N/A</span>
+          <div class="col-xs-8">
+            <div class="row">
+              <div class="col-xs-6">Gender</div>
+              <div class="col-xs-6">:{{ emp.gender }}</div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">Phone</div>
-            <div class="col-xs-6">:{{emp.phoneNumber}}</div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">Is Active</div>
-            <div class="col-xs-6">:{{emp.isActive}}</div>
+            <div class="row">
+              <div class="col-xs-6">Email</div>
+              <div class="col-xs-6">:{{ emp.email }}</div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6">Contact Preferences</div>
+              <div class="col-xs-6">:{{ emp.contactPreference }}</div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6">Date of Birth</div>
+              <div class="col-xs-6">:{{ emp.dateOfBirth | date }}</div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6">Department</div>
+              <div class="col-xs-6" [ngSwitch]="emp.department">
+                : <span *ngSwitchCase="1">Help Desk</span>
+                <span *ngSwitchCase="2">IT</span>
+                <span *ngSwitchCase="3">Payroll</span>
+                <span *ngSwitchCase="4">HR</span>
+                <span *ngSwitchDefault>N/A</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6">Phone</div>
+              <div class="col-xs-6">:{{ emp.phoneNumber }}</div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6">Is Active</div>
+              <div class="col-xs-6">:{{ emp.isActive }}</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      <div class="myPanelFooter" >
+          <button class="btn btn-primary" (click)="viewEmployee()">View</button>
+          <button class="btn btn-primary"(click)= "editEmployee()">Edit</button>
+          <span *ngIf="confirmDelete">
+            <span>Are you sure you want to Delete?</span>
+            <button class="btn btn-danger" (click)="deleteEmployee()">Yes</button>
+            <button class="btn btn-primary" (click)="confirmDelete=false">No</button>
+          </span>
+          <button class="btn btn-danger" *ngIf="!confirmDelete" (click)="confirmDelete=true">Delete</button>
+        </div>
+
+</app-accordian>
+<!-- <div
+  class="panel panel-primary"
+  [class.panel-success]="selectedEmployeeId === emp.id"
+  (click)="handleClick()"
+> -->
+  <!-- <div class="panel-heading pointerCursor" (click)="panelExpanded = !panelExpanded"> used for accordian -->
+      <!-- <div class="panel-heading ">
+    <h3 class="panel-title">{{ emp.name | uppercase }}</h3>
   </div>
-</div>
+  <div class="panel-body " > -->
+      <!-- <div class="panel-body" [hidden]="!panelExpanded"> used for accordian -->
+
+  <!-- </div> -->
+  <!-- <div class="panel-footer" [hidden]="!panelExpanded"> used for accordian -->
+
+<!-- </div> -->

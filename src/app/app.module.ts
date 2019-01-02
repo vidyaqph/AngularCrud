@@ -19,6 +19,10 @@ import { ListEmployeesWithHighlightedComponent } from './list-employees-with-hig
 import { EmployeeFilterPipe } from './employees/employees-filter.pipe';
 import { EmployeeListResolverService } from './shared/employee-list-resolver.service';
 import { PageNotFoundComponent } from './page-not-found.component';
+import { EmployeeDetailsGuardService } from './employees/employee-details_guard.service';
+import { ListWithCrudComponent } from './employees/list-with-crud.component';
+import { AccordianComponent } from './shared/accordian.component';
+import { HttpClientModule } from '@angular/common/http';
 
 const appRoutes: Routes = [
   { path: 'list', component: ListEmployeesComponent },
@@ -28,13 +32,24 @@ const appRoutes: Routes = [
     resolve: { employeeList: EmployeeListResolverService } // employeeList is key and can give any name
   },
   { path: 'create', component: CreateEmployeeComponent },
-  { path: 'employees/:id', component: EmployeeDetailsComponent },
   {
-    path: 'model',
+    path: 'employees/:id',
+    component: EmployeeDetailsComponent,
+    canActivate: [EmployeeDetailsGuardService]
+  },
+  {
+    path: 'edit/:id',
     component: CreateEmployeeModelComponent,
     canDeactivate: [CreateEmployeeCanDeactivateGuardService]
   },
-  { path: '', redirectTo: '/list', pathMatch: 'full' }
+  {
+    path: 'crud',
+    component: ListWithCrudComponent,
+    // canDeactivate: [CreateEmployeeCanDeactivateGuardService],
+    resolve: { employeeList: EmployeeListResolverService }
+  },
+  { path: '', redirectTo: '/list', pathMatch: 'full' },
+  { path: 'notfound', component: PageNotFoundComponent }
 ];
 
 @NgModule({
@@ -49,18 +64,22 @@ const appRoutes: Routes = [
     EmployeeDetailsComponent,
     ListEmployeesWithHighlightedComponent,
     EmployeeFilterPipe,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    ListWithCrudComponent,
+    AccordianComponent
   ],
   imports: [
     BrowserModule,
     BsDatepickerModule.forRoot(),
     RouterModule.forRoot(appRoutes, { enableTracing: true }), // Enable tracing of router navigation events.. Dont do in production
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [
     EmployeeService,
     CreateEmployeeCanDeactivateGuardService,
-    EmployeeListResolverService
+    EmployeeListResolverService,
+    EmployeeDetailsGuardService
   ],
   bootstrap: [AppComponent]
 })

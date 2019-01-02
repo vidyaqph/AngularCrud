@@ -1,10 +1,8 @@
-.imageClass
-{
-  height:200px;
-  width: 200px
+.imageClass {
+  height: 200px;
+  width: 200px;
 }
-.vertical-align
-{
-display: flex;
-align-items: center;
+.vertical-align {
+  display: flex;
+  align-items: center;
 }
