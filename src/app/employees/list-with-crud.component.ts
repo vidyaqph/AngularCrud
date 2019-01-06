@@ -18,6 +18,7 @@ export class ListWithCrudComponent implements OnInit {
 
   // searchTerm: string; //Used for testing filtering using pipe
   private _searchTerm: string; // CHnaging to property to use for data filtering in component.
+  error: string;
   get searchTerm(): string {
     return this._searchTerm;
   }
@@ -36,8 +37,15 @@ export class ListWithCrudComponent implements OnInit {
     // this will get data from resolver service. the key will be the same key used in resolve section in app modules
     // to add resolver service. this will load the page when all the display elements are ready while clicking on a link
     // this rewrite will help to avoid displaying blank page (after the delay which is introduced in the employee service)
-    this.employees = this._route.snapshot.data['employeeList'];
-    this.filteredEmployees = this.employees;
+    // this.employees = this._route.snapshot.data['employeeList'];
+    // this.filteredEmployees = this.employees;
+    const resolvedEmployeeList = this._route.snapshot.data['employeeList']; // get resolver service data using new type which contain error property
+    if (resolvedEmployeeList.error === null) {
+      this.employees = resolvedEmployeeList.employeeList;
+      this.filteredEmployees = this.employees;
+    } else {
+      this.error = resolvedEmployeeList.error;
+    }
     // Snapshot approach to read query param
     // if (this._route.snapshot.queryParamMap.has('searchTerm')) {
     //   this.searchTerm = this._route.snapshot.queryParamMap.get('searchTerm');

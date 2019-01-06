@@ -4,7 +4,12 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of'; // used to return observable
 import 'rxjs/add/operator/delay'; // used to introduce delay
 import 'rxjs/add/operator/catch'; // include catch
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders
+} from '@angular/common/http';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 @Injectable()
 export class EmployeeService {
@@ -52,8 +57,9 @@ export class EmployeeService {
   getEmployeeObservable(): Observable<Employee[]> {
     // return Observable.of(this.listEmployees).delay(2000); // static list
     return this.httpClient
-      .get<Employee[]>('http://localhost:3000/employees1')
-      .catch(this.handleError);
+      .get<Employee[]>('http://localhost:3000/employees')
+      .pipe(catchError(this.handleError)); // Rxjs Pipeable operator
+    //  .catch(this.handleError); // Patch operator
   }
   private handleError(errorResponse: HttpErrorResponse) {
     if (errorResponse.error instanceof ErrorEvent) {
@@ -68,14 +74,25 @@ export class EmployeeService {
     return this.listEmployees.find(x => x.id === id);
   }
 
-  saveEmployee(employee: Employee) {
+  saveEmployee(employee: Employee): Observable<Employee> {
+    // return type Observable<Employee> is required only when using post to server.
+    // not needed for static data array
     if (employee.id === null) {
+      // commenting as this will be done in server side service.
       // reduce will loop through all the the elements
-      const maxId = this.listEmployees.reduce(function(e1, e2) {
-        return e1.id > e2.id ? e1 : e2;
-      }).id;
-      employee.id = maxId + 1;
-      this.listEmployees.push(employee);
+      // const maxId = this.listEmployees.reduce(function(e1, e2) {
+      //   return e1.id > e2.id ? e1 : e2;
+      // }).id;
+      // employee.id = maxId + 1;
+      // this.listEmployees.push(employee);
+
+      return this.httpClient
+        .post<Employee>('http://localhost:3000/employees', employee, {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json'
+          })
+        })
+        .pipe(catchError(this.handleError));
     } else {
       const foundIndex = this.listEmployees.findIndex(
         emp => emp.id === employee.id

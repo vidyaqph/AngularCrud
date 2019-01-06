@@ -100,15 +100,24 @@ export class CreateEmployeeModelComponent implements OnInit {
   // }
   SaveEmployee(empForm: NgForm): void {
     const newEmployee: Employee = Object.assign({}, this.employee); // Created to copy data and reference of employee obj
-    // so that employee data from the model is preserved during reset.
-    this._employeeService.saveEmployee(newEmployee);
-    empForm.reset({
-      name: 'Test User', // Sets default value
-      contactPreference: 'phone'
-    });
+    // so that employee data from the model is preserved during reset.this additional step is not required if we are subscribing to an observable
+    // during subscribe we can pass the same this.employee
+    this._employeeService.saveEmployee(newEmployee).subscribe(
+      (data: Employee) => {
+        empForm.reset();
+        this._router.navigate(['crud']);
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
+    // empForm.reset({
+    //   name: 'Test User', // Sets default value
+    //   contactPreference: 'phone'
+    // });
     // this.createEmployeeForm.reset(); // ViewChild can also be used to reset the form.
     // this._router.navigate(['list']); // Navigate to route list
-    this._router.navigate(['highlightedList']);
+    // this._router.navigate(['highlightedList']);
   }
   ShowPreview() {
     this.previewPhoto = !this.previewPhoto;
