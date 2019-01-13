@@ -2,14 +2,16 @@
   "employees": [
     {
       "id": "1",
-      "name": "Nick",
+      "name": "Nicky",
       "gender": "male",
       "email": "john@fdgdfg.com",
       "contactPreference": "Email",
       "dateOfBirth": "10/25/1988",
       "department": "2",
       "isActive": "true",
-      "photoPath": "assets/images/John.png"
+      "photoPath": "assets/images/John.png",
+      "password": "a",
+      "confirmPassword": "a"
     },
     {
       "id": "2",
@@ -35,7 +37,7 @@
       "photoPath": "assets/images/Jany.jpg"
     },
     {
-      "id": "_Zwc9L1",
+      "id": "4",
       "name": "David",
       "contactPreference": "Email",
       "dateOfBirth": null,
@@ -48,21 +50,6 @@
       "emailPattern": null,
       "password": "r",
       "confirmPassword": "r"
-    },
-    {
-      "id": "hoBeN7f",
-      "name": "Test",
-      "contactPreference": "Email",
-      "dateOfBirth": "1988-03-21T05:00:00.000Z",
-      "department": "3",
-      "email": "t@a.com",
-      "gender": "female",
-      "isActive": true,
-      "phoneNumber": null,
-      "photoPath": null,
-      "emailPattern": null,
-      "password": "t",
-      "confirmPassword": "t"
     }
   ]
 }

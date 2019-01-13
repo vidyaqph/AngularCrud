@@ -26,7 +26,13 @@ export class EmployeeDetailsComponent implements OnInit {
     // Get parameter id using observables.
     this._route.paramMap.subscribe(params => {
       this._id = +params.get('id');
-      this.employee = this._employeeService.getEmployeeDetails(this._id);
+      // this.employee = this._employeeService.getEmployeeDetails(this._id);
+      this._employeeService
+        .getEmployeeDetails(this._id)
+        .subscribe(
+          employee => (this.employee = employee),
+          (err: any) => console.log(err)
+        );
     });
   }
   viewNextEmployee() {

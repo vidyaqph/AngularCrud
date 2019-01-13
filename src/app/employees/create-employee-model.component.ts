@@ -88,10 +88,16 @@ export class CreateEmployeeModelComponent implements OnInit {
       // this.employee = this._employeeService.getEmployeeDetails(id);
       // Inorder to avoid reference issue use object.assign so that the variables are copied to a new variable and assign that variable
       this.panelTitle = 'Edit Employee';
-      this.employee = Object.assign(
-        {},
-        this._employeeService.getEmployeeDetails(id)
-      );
+      // this.employee = Object.assign(
+      //   {},
+      //   this._employeeService.getEmployeeDetails(id)
+      //  );
+      this._employeeService
+        .getEmployeeDetails(id)
+        .subscribe(
+          employee => (this.employee = employee),
+          (err: any) => console.log(err)
+        );
     }
   }
 
@@ -99,18 +105,30 @@ export class CreateEmployeeModelComponent implements OnInit {
   //   console.log(newEmployee);
   // }
   SaveEmployee(empForm: NgForm): void {
-    const newEmployee: Employee = Object.assign({}, this.employee); // Created to copy data and reference of employee obj
+    // const newEmployee: Employee = Object.assign({}, this.employee); // Created to copy data and reference of employee obj
     // so that employee data from the model is preserved during reset.this additional step is not required if we are subscribing to an observable
     // during subscribe we can pass the same this.employee
-    this._employeeService.saveEmployee(newEmployee).subscribe(
-      (data: Employee) => {
-        empForm.reset();
-        this._router.navigate(['crud']);
-      },
-      (error: any) => {
-        console.log(error);
-      }
-    );
+    if (this.employee.id === null) {
+      this._employeeService.saveEmployee(this.employee).subscribe(
+        (data: Employee) => {
+          empForm.reset();
+          this._router.navigate(['crud']);
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+    } else {
+      this._employeeService.updateEmployee(this.employee).subscribe(
+        () => {
+          empForm.reset();
+          this._router.navigate(['crud']);
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+    }
     // empForm.reset({
     //   name: 'Test User', // Sets default value
     //   contactPreference: 'phone'

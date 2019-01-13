@@ -90,7 +90,12 @@ export class DisplayEmployeeComponent implements OnInit, OnChanges {
     this._router.navigate(['/edit', this.emp.id], {});
   }
   deleteEmployee() {
-    this._employeeService.deleteEmployee(this.emp.id);
+    this._employeeService
+      .deleteEmployee(this.emp.id)
+      .subscribe(
+        () => console.log(`Employee with id=${this.emp.id} deleted.`),
+        (err: any) => console.log(err)
+      );
     this.notifyDelete.emit(this.emp.id);
     // this is to notify the parent list component about delete so that it can adjust the filter accordingly
   }

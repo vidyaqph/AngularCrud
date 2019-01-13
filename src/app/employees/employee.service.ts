@@ -13,6 +13,7 @@ import {
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 @Injectable()
 export class EmployeeService {
+  baseUrl = 'http://localhost:3000/employees';
   constructor(private httpClient: HttpClient) {}
   private listEmployees: Employee[] = [
     {
@@ -70,8 +71,11 @@ export class EmployeeService {
     return new ErrorObservable('There is a problem with the service');
   }
 
-  getEmployeeDetails(id: number): Employee {
-    return this.listEmployees.find(x => x.id === id);
+  getEmployeeDetails(id: number): Observable<Employee> {
+    // return this.listEmployees.find(x => x.id === id);
+    return this.httpClient
+      .get<Employee>(`${this.baseUrl}/${id}`)
+      .pipe(catchError(this.handleError));
   }
 
   saveEmployee(employee: Employee): Observable<Employee> {
@@ -100,10 +104,33 @@ export class EmployeeService {
       this.listEmployees[foundIndex] = employee;
     }
   }
-  deleteEmployee(id: number) {
-    const idx = this.listEmployees.findIndex(e => e.id === id);
-    if (idx !== -1) {
-      this.listEmployees.splice(idx, 1); // delete an element from specified index
-    }
+
+  updateEmployee(employee: Employee): Observable<void> {
+    // return type Observable<Employee> is required only when using post to server.
+    // not needed for static data array
+    // commenting as this will be done in server side service.
+    // reduce will loop through all the the elements
+    // const maxId = this.listEmployees.reduce(function(e1, e2) {
+    //   return e1.id > e2.id ? e1 : e2;
+    // }).id;
+    // employee.id = maxId + 1;
+    // this.listEmployees.push(employee);
+
+    return this.httpClient
+      .put<void>(`${this.baseUrl}/${employee.id}`, employee, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  deleteEmployee(id: number): Observable<void> {
+    // const idx = this.listEmployees.findIndex(e => e.id === id);
+    // if (idx !== -1) {
+    //   this.listEmployees.splice(idx, 1); // delete an element from specified index
+    return this.httpClient
+      .delete<void>(`${this.baseUrl}/${id}`)
+      .pipe(catchError(this.handleError));
   }
 }
